@@ -64,9 +64,9 @@ sudo systemctl start docker
 
 ## 4️⃣ Move /var/log to SSD
 
-> You can use bind-mount or rsync + fstab.
+> This prevents constant writes to the SD card and improves lifespan.
 
-### One-time move:
+### Move and symlink:
 
 ```bash
 sudo rsync -aAXv /var/log/ /mnt/ssd/logs/
@@ -74,13 +74,13 @@ sudo mv /var/log /var/log.bak
 sudo ln -s /mnt/ssd/logs /var/log
 ```
 
-### (Optional) Or make it persistent with fstab:
+### (Recommended) Make it persistent with fstab:
 
 ```bash
 sudo nano /etc/fstab
 ```
 
-Add:
+Add line at the end:
 
 ```
 /mnt/ssd/logs  /var/log  none  bind  0  0
@@ -102,6 +102,6 @@ echo '/mnt/ssd/swap/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
 
 ## ✅ Done
 
-- All working data, logs, docker, swap → SSD  
-- SD card only holds base Ubuntu system  
-- You gain speed + reliability
+- All working data, logs, docker, swap → SSD
+- SD card only holds a base Ubuntu system
+- You gain speed and reliability
