@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg
+*.egg-info/
+dist/
+build/
+
+# VSCode
+.vscode/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs and runtime
+*.log
+*.swp
+*.swo
+
+# Hidden files
+.*~
+
+# Ignore swap and temporary files on SSD
+/mnt/ssd/swap/
+/mnt/ssd/tmp/
+
+# Git
+.git/
+
+# Backup files
+*.bak
+*.old
+*.orig
+
+# JetBrains IDEs
+.idea/
+*.iml
+out/

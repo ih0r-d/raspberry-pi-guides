@@ -6,10 +6,10 @@ A collection of practical guides for setting up and configuring Raspberry Pi 5 w
 
 ## 📚 Available Guides
 
-| File | Description |
-|------|-------------|
-| [`raspberry-pi-ssd-setup.md`](./raspberry-pi-ssd-setup.md) | Full setup from flashing Ubuntu Server to auto-mounting SSD and enabling Wi-Fi |
-| [`rpi-ssd-move-workloads.md`](./rpi-ssd-move-workloads.md) | Steps to move logs, Docker, swap, and user data from SD to SSD |
+| File                                                | Description                                                                    |
+|-----------------------------------------------------|--------------------------------------------------------------------------------|
+| [`rpi-ssd-setup.md`](docs/rpi-ssd-setup.md)         | Full setup from flashing Ubuntu Server to auto-mounting SSD and enabling Wi-Fi |
+| [`rpi-ssd-workloads.md`](docs/rpi-ssd-workloads.md) | Steps to move logs, Docker, swap, and user data from SD to SSD                 |
 
 ---
 
