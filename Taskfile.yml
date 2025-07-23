@@ -1,0 +1,41 @@
+version: '3'
+
+env:
+  ANSIBLE_CONFIG: ansible/ansible.cfg
+  ANSIBLE_HOST: # paste host here
+  ANSIBLE_USER: # paste user here
+  TIMEZONE: Europe/Kyiv
+  USE_SWAP: true
+  HOSTNAME: # paste hostname here
+  SSD_MOUNT_POINT: /mnt/ssd
+
+tasks:
+  setup:
+    desc: Run Ansible Playbook to configure Raspberry Pi
+    cmds:
+      - >
+        ansible-playbook ansible/site.yml
+        -e ansible_host={{.ANSIBLE_HOST}}
+        -e ansible_user={{.ANSIBLE_USER}}
+        -e HOSTNAME={{.HOSTNAME}}
+        -e SSD_MOUNT_POINT={{.SSD_MOUNT_POINT}}
+        -e TIMEZONE={{.TIMEZONE}}
+        -e USE_SWAP={{.USE_SWAP}}
+
+  ping:
+    desc: Check Ansible connectivity
+    cmds:
+      - >
+        ansible -i ansible/inventory/hosts all -m ping
+        -e ansible_host={{.ANSIBLE_HOST}}
+        -e ansible_user={{.ANSIBLE_USER}}
+
+  ssh:
+    desc: SSH into Raspberry Pi
+    cmds:
+      - ssh {{.ANSIBLE_USER}}@{{.ANSIBLE_HOST}}
+
+  logs:
+    desc: Tail system logs from Pi
+    cmds:
+      - ssh {{.ANSIBLE_USER}}@{{.ANSIBLE_HOST}} "sudo journalctl -f -n 100"

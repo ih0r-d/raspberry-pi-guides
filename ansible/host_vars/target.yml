@@ -1,0 +1,2 @@
+hostname: "{{ hostname | default(lookup('env', 'HOSTNAME')) }}"
+ssd_mount_point: "{{ ssd_mount_point | default(lookup('env', ' ')) }}"

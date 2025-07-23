@@ -1,0 +1,10 @@
+- name: Setup Raspberry Pi with SSD
+  hosts: raspberrypi
+  become: true
+
+  roles:
+    - base
+    - ssh
+    - ssd
+    - docker
+    - swap
