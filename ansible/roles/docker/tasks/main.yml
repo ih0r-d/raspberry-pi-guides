@@ -1,1 +1,78 @@
 ---
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  become: true
+  tags: docker_update_cache
+
+- name: Install prerequisite packages
+  ansible.builtin.package:
+    name:
+      - ca-certificates
+      - curl
+      - gnupg
+      - lsb-release
+    state: present
+  become: true
+  tags: docker_prereqs
+
+- name: Create directory for Docker GPG key storage
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
+  become: true
+  tags: docker_keyring_dir
+
+- name: Add Docker's official GPG key
+  ansible.builtin.get_url:
+    url: "https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg"
+    dest: /etc/apt/keyrings/docker.asc
+    mode: '0644'
+    force: true
+  become: true
+  tags: docker_gpg_key
+
+- name: Add Docker APT repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch={{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture }} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_lsb.codename }} stable"
+    filename: docker
+    state: present
+    update_cache: true
+  become: true
+  tags: docker_repo
+
+- name: Install Docker Engine & tools
+  ansible.builtin.package:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    state: present
+  become: true
+  notify: Restart Docker Service
+  tags: docker_packages
+
+- name: Add user to docker group
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: docker
+    append: true
+  become: true
+  tags: docker_user_group
+
+- name: (Optional) Configure custom Docker data-root (SSD)
+  when: docker_data_root is defined
+  ansible.builtin.copy:
+    dest: /etc/docker/daemon.json
+    content: |
+      {
+        "data-root": "{{ docker_data_root }}"
+      }
+    mode: '0644'
+  notify: Restart Docker Service
+  become: true
+  tags: docker_daemon_config

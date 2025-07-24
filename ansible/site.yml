@@ -4,7 +4,4 @@
 
   roles:
     - base
-    - ssh
-    - ssd
     - docker
-    - swap

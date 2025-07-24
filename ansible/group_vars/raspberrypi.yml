@@ -1,3 +1,4 @@
 ansible_user: "{{ ansible_user | default(lookup('env', 'ANSIBLE_USER')) }}"
 timezone: "{{ timezone | default(lookup('env', 'TIMEZONE')) }}"
 use_swap: "{{ use_swap | default((lookup('env', 'USE_SWAP') | default('true')) | bool) }}"
+docker_data_root: "{{ lookup('env', 'DOCKER_DATA_ROOT') | default('/mnt/ssd/docker') }}"

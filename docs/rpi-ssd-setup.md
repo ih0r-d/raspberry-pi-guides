@@ -11,7 +11,7 @@ This guide describes how to configure a Raspberry Pi 5 with an NVMe SSD for data
 - NVMe M.2 SSD + PCIe adapter (e.g. 256–512GB, Gen3 x4)
 - USB keyboard, micro-HDMI cable
 - Ethernet or Wi-Fi connection
-- Ubuntu Server 25.10 for Raspberry Pi
+- Ubuntu Server 25.04 for Raspberry Pi
 
 ---
 

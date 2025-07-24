@@ -15,7 +15,7 @@ This guide helps you configure **SSH key-based login** to your Raspberry Pi — 
 ## 1️⃣ Generate SSH Key (on your Mac)
 
 ```bash
-ssh-keygen -t ed25519 -C "raspberry-pi"
+ssh-keygen -t rsa -b 4096 -C "raspberry-pi"
 ```
 
 Just press `Enter` through all prompts to use the default path: `~/.ssh/id_ed25519`
@@ -27,13 +27,13 @@ Just press `Enter` through all prompts to use the default path: `~/.ssh/id_ed255
 Replace `<user>` and `<ip>` accordingly:
 
 ```bash
-ssh-copy-id <user>@<raspberry_pi_ip>
+ssh-copy-id -i raspberry.pub <user>@<raspberry_pi_ip>
 ```
 
 Example:
 
 ```bash
-ssh-copy-id ihord@192.168.0.150
+ssh-copy-id -i raspberry.pub ihord@192.168.0.150
 ```
 
 You will be asked for your password **one last time**.
@@ -45,7 +45,7 @@ You will be asked for your password **one last time**.
 Use this alternative:
 
 ```bash
-cat ~/.ssh/id_ed25519.pub | ssh <user>@<raspberry_pi_ip> "mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
+cat ~/.ssh/raspberry.pub | ssh -i ~/.ssh/raspberry.pub <user>@<raspberry_pi_ip> "mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
 ```
 
 ---
@@ -53,7 +53,7 @@ cat ~/.ssh/id_ed25519.pub | ssh <user>@<raspberry_pi_ip> "mkdir -p ~/.ssh && chm
 ## 3️⃣ Test Login (No Password Prompt)
 
 ```bash
-ssh <user>@<raspberry_pi_ip>
+ssh -i raspberry.pub <user>@<raspberry_pi_ip>
 ```
 
 ✅ You should log in **without being asked for a password**

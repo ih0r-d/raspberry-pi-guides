@@ -63,7 +63,7 @@ All paths, credentials, and flags are managed centrally.
 
 ## 📌 Notes
 
-- All guides assume Raspberry Pi 5 with Ubuntu Server 25.10
+- All guides assume Raspberry Pi 5 with Ubuntu Server 25.04
 - Focus is on minimizing SD wear and maximizing SSD usage
 - Designed for performance, automation, and long-term use
 

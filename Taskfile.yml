@@ -2,12 +2,14 @@ version: '3'
 
 env:
   ANSIBLE_CONFIG: ansible/ansible.cfg
-  ANSIBLE_HOST: # paste host here
-  ANSIBLE_USER: # paste user here
+  ANSIBLE_HOST: 192.168.0.123 # paste host here
+  ANSIBLE_USER: ihord # paste user here
   TIMEZONE: Europe/Kyiv
   USE_SWAP: true
-  HOSTNAME: # paste hostname here
+  HOSTNAME: raspberrypi # paste hostname here
   SSD_MOUNT_POINT: /mnt/ssd
+  SSH_KEY: raspberry
+
 
 tasks:
   setup:
@@ -36,6 +38,31 @@ tasks:
       - ssh {{.ANSIBLE_USER}}@{{.ANSIBLE_HOST}}
 
   logs:
-    desc: Tail system logs from Pi
+    desc: Tail system logs (ISO format, all units)
     cmds:
-      - ssh {{.ANSIBLE_USER}}@{{.ANSIBLE_HOST}} "sudo journalctl -f -n 100"
+      - ssh -i {{.SSH_KEY}} {{.ANSIBLE_USER}}@{{.ANSIBLE_HOST}} \
+        "journalctl -f -n 100 --output=short-iso --no-pager"
+
+  logs:compact:
+    desc: Tail system logs (compact, message-only)
+    cmds:
+      - ssh -i {{.SSH_KEY}} {{.ANSIBLE_USER}}@{{.ANSIBLE_HOST}} \
+        "journalctl -f -n 100 --output=cat --no-pager"
+
+  logs:pretty:
+    desc: Tail system logs (pretty JSON)
+    cmds:
+      - ssh -i {{.SSH_KEY}} {{.ANSIBLE_USER}}@{{.ANSIBLE_HOST}} \
+        "journalctl -f -n 100 --output=json-pretty --no-pager"
+
+  logs:docker:
+    desc: Tail logs from Docker service only
+    cmds:
+      - ssh -i {{.SSH_KEY}} {{.ANSIBLE_USER}}@{{.ANSIBLE_HOST}} \
+        "journalctl -u docker.service -f -n 100 --output=short-iso --no-pager"
+
+  logs:sshd:
+    desc: Tail logs from SSHD (auth/login)
+    cmds:
+      - ssh -i {{.SSH_KEY}} {{.ANSIBLE_USER}}@{{.ANSIBLE_HOST}} \
+        "journalctl -u ssh -f -n 100 --output=short-iso --no-pager"
